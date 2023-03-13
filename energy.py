@@ -14,7 +14,7 @@ def E_value_and_grad(slog_Si,fi):
         RY=si(Y)/fi(Y)
         E=jnp.average(RX*RY)
         grad=jax.grad(lambda p: -jnp.average( clip( (RX-jnp.average(RX))*slog_Si(p,X)[1] ))*jnp.average(RY))
-        return E,grad(P)
+        return -E,grad(P)
     
     return jax.jit(value_and_grad)
 
@@ -26,8 +26,9 @@ def nomcmc_value_and_grad(slog_Si,fi):
     def loss(P,X,Y):
         #sifi=jnp.sqrt(jnp.average( clip((Si(P,Y)**2)/(fiY**2)) ))
         sifi=jnp.sqrt(jnp.sum(Si(P,X)**2)/jnp.sum(fi(X)**2))
-        return -jnp.average( clip(Si(P,Y)/fi(Y)) )/sifi
-
+        out=jnp.average( clip(Si(P,Y)/fi(Y)) )/sifi
+        return -out**2
+    
     return jax.jit(jax.value_and_grad(loss))
 
 

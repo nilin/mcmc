@@ -95,11 +95,11 @@ match mode:
             X=si_sampler.sample(state.params,steps=100)
             Y=fi_sampler.sample(None)
             
-            val,grads=E_value_and_grad(state.params,X,Y)
+            loss,grads=E_value_and_grad(state.params,X,Y)
             state=state.apply_gradients(grads=grads)
 
-            vals.append(val)
-            print(val)
+            vals.append(-loss)
+            print(-loss)
 
         session.save(vals,'data/mcmc')
 
@@ -113,11 +113,11 @@ match mode:
         for i in range(1000):
             Y=fi_sampler.sample(None)
             
-            val,grads=E_value_and_grad(state.params,X,Y)
+            loss,grads=E_value_and_grad(state.params,X,Y)
             state=state.apply_gradients(grads=grads)
 
-            vals.append(val)
-            print(val)
+            vals.append(-loss)
+            print(-loss)
 
         session.save(vals,'data/nomcmc')
 
