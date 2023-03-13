@@ -58,7 +58,7 @@ match mode:
             vals.append(-loss)
             print(-loss)
 
-        session.save(vals,'data/mcmc')
+        session.save(vals,'outputs/mcmc')
 
 
     case 'correlated':
@@ -75,7 +75,7 @@ match mode:
             vals.append(-loss)
             print(-loss)
 
-        session.save(vals,'data/correlated')
+        session.save(vals,'outputs/correlated')
 
 
     case 'no_mc':
@@ -87,7 +87,7 @@ match mode:
             vals.append(-loss)
             print(-loss)
 
-        session.save(vals,'data/no_mc')
+        session.save(vals,'outputs/no_mc')
 
         import matplotlib.pyplot as plt
         x=jnp.expand_dims(jnp.arange(-2,2,.01),axis=1)

@@ -1,6 +1,6 @@
 *__pycache__
 *.DS_Store
 *.ipynb_checkpoints
-/data
-!/data/plot.ipynb
-!/data/comp.pdf
+/outputs/*
+!/outputs/plot.ipynb
+!/outputs/comp.pdf
