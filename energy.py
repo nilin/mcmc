@@ -5,7 +5,7 @@ from functools import partial
 
 clip=lambda x:jnp.clip(x,a_min=-100,a_max=100)
 
-def E_value_and_grad(slog_Si,fi):
+def MCMC_value_and_grad(slog_Si,fi):
     Si=noslog(slog_Si)
 
     def value_and_grad(P,X,Y):
@@ -19,8 +19,7 @@ def E_value_and_grad(slog_Si,fi):
     return jax.jit(value_and_grad)
 
 
-
-def nomcmc_value_and_grad(slog_Si,fi):
+def correlated_value_and_grad(slog_Si,fi):
     Si=noslog(slog_Si)
 
     def loss(P,X,Y):
@@ -28,6 +27,17 @@ def nomcmc_value_and_grad(slog_Si,fi):
         sifi=jnp.sqrt(jnp.sum(Si(P,X)**2)/jnp.sum(fi(X)**2))
         out=jnp.average( clip(Si(P,Y)/fi(Y)) )/sifi
         return -out**2
+    
+    return jax.jit(jax.value_and_grad(loss))
+
+
+def NO_MC_value_and_grad(slog_Si,fi):
+    Si=noslog(slog_Si)
+
+    def loss(P,X,Y):
+        s=Si(P,X)
+        f=fi(X)
+        return -jnp.average(s*f)**2/(jnp.average(s**2)*jnp.average(f**2))
     
     return jax.jit(jax.value_and_grad(loss))
 
